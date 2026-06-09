@@ -12,7 +12,7 @@ export default function Footer() {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         flexWrap: 'wrap', gap: 16,
       }}>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
           © {new Date().getFullYear()}{' '}
           <span style={{
             background: 'linear-gradient(135deg, #7c3aed, #ec4899)',
@@ -36,7 +36,7 @@ export default function Footer() {
               whileHover={{ color: '#a78bfa' }}
               style={{
                 fontFamily: 'var(--font-mono)', fontSize: '0.8rem',
-                color: 'var(--text-muted)',
+                color: 'var(--text-secondary)',
                 textDecoration: 'none',
                 transition: 'color 0.2s',
               }}

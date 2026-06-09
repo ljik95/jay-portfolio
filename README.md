@@ -3,11 +3,11 @@
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react&logoColor=white)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat&logo=vite&logoColor=white)](https://vitejs.dev)
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-0055FF?style=flat&logo=framer&logoColor=white)](https://www.framer.com/motion)
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=flat&logo=vercel&logoColor=white)](https://vercel.com)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=flat&logo=vercel&logoColor=white)](https://jaythom.dev)
 
 Personal portfolio website for **Jay Thom**, a Senior Software Engineer with 7+ years of experience building scalable full-stack applications. Built with React and Framer Motion, featuring scroll-triggered animations and a bold, modern design.
 
-**→ [Live Site](https://jay-thom.vercel.app)**
+**→ [Live Site](https://jaythom.dev)**
 
 ---
 
