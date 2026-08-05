@@ -7,7 +7,7 @@ const SKILL_CATEGORIES = [
     color: '#7c3aed',
     glow: 'rgba(124,58,237,0.3)',
     icon: '◈',
-    skills: ['TypeScript', 'React', 'Vue', 'HTML', 'CSS'],
+    skills: ['TypeScript', 'React', 'NextJS', 'Vue', 'HTML', 'CSS'],
   },
   {
     label: 'Backend',
@@ -28,7 +28,7 @@ const SKILL_CATEGORIES = [
     color: '#f59e0b',
     glow: 'rgba(245,158,11,0.3)',
     icon: '◆',
-    skills: ['Agile Methodologies', 'Test Driven Development', 'Monorepo Architecture', 'Integration Testing'],
+    skills: ['Agile Methodologies', 'Test Driven Development', 'AI Integration & LLM APIs', 'Integration Testing'],
   },
 ]
 

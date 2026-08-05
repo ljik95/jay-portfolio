@@ -36,12 +36,6 @@ function useTypewriter(words, speed = 80, pause = 1800) {
   return display
 }
 
-const STATS = [
-  { value: '7+', label: 'Years Experience' },
-  { value: '30%', label: 'Perf Gains Delivered' },
-  { value: '50%', label: 'Process Automation' },
-]
-
 const TECH_STACK = ['TypeScript', 'React', 'Python', 'Node.js', 'AWS', 'Terraform']
 
 export default function Hero() {
@@ -246,11 +240,11 @@ export default function Hero() {
           >
             I architect and ship{' '}
             <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>production-grade full-stack systems</span>{' '}
-            with <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>7+ years</span> of experience.
-            I've led platform migrations delivering{' '}
-            <span style={{ color: '#a78bfa', fontWeight: 600 }}>30% performance gains</span> and built
-            cloud pipelines that cut processing time by{' '}
-            <span style={{ color: '#67e8f9', fontWeight: 600 }}>50%</span> — I focus on work that moves the needle.
+            — from front-end platforms and design systems to the cloud infrastructure underneath them.
+            I care about{' '}
+            <span style={{ color: '#a78bfa', fontWeight: 600 }}>clean architecture</span>,{' '}
+            <span style={{ color: '#67e8f9', fontWeight: 600 }}>thoughtful user experience</span>, and writing
+            code that teams can keep building on for years.
           </motion.p>
 
           {/* CTAs */}
@@ -328,7 +322,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 48 }}
+            style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}
           >
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.1em' }}>
               STACK
@@ -345,41 +339,6 @@ export default function Hero() {
             ))}
           </motion.div>
 
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            style={{
-              display: 'flex', gap: 40, flexWrap: 'wrap',
-              paddingTop: 32,
-              borderTop: '1px solid rgba(255,255,255,0.07)',
-            }}
-          >
-            {STATS.map((s, i) => (
-              <div key={i}>
-                <div style={{
-                  fontSize: 'clamp(1.6rem, 4vw, 2.2rem)',
-                  fontWeight: 800,
-                  background: i === 0
-                    ? 'linear-gradient(135deg, #7c3aed, #ec4899)'
-                    : i === 1
-                    ? 'linear-gradient(135deg, #06b6d4, #7c3aed)'
-                    : 'linear-gradient(135deg, #f59e0b, #ec4899)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  lineHeight: 1,
-                  marginBottom: 4,
-                }}>
-                  {s.value}
-                </div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 500 }}>
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </motion.div>
         </div>
       </div>
 
