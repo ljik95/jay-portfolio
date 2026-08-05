@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 
 const ROLES = [
   'Senior Software Engineer',
@@ -8,13 +8,13 @@ const ROLES = [
   'React & TypeScript Expert',
 ]
 
-function useTypewriter(words, speed = 80, pause = 1800) {
-  const [display, setDisplay] = useState('')
+function useTypewriter(words, { enabled = true, speed = 80, pause = 1800 } = {}) {
   const [wordIdx, setWordIdx] = useState(0)
   const [charIdx, setCharIdx] = useState(0)
   const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
+    if (!enabled) return
     const current = words[wordIdx]
     let timeout
 
@@ -29,38 +29,53 @@ function useTypewriter(words, speed = 80, pause = 1800) {
       setWordIdx((i) => (i + 1) % words.length)
     }
 
-    setDisplay(current.slice(0, charIdx))
     return () => clearTimeout(timeout)
-  }, [charIdx, deleting, wordIdx, words, speed, pause])
+  }, [charIdx, deleting, wordIdx, words, speed, pause, enabled])
 
-  return display
+  // Reduced motion: skip the animation and just state the primary role.
+  if (!enabled) return words[0]
+  return words[wordIdx].slice(0, charIdx)
 }
 
-const TECH_STACK = ['TypeScript', 'React', 'Python', 'Node.js', 'AWS', 'Terraform']
+const TECH_STACK = ['TypeScript', 'React', 'Next.js', 'Python', 'Node.js', 'AWS', 'Terraform']
 
 export default function Hero() {
-  const role = useTypewriter(ROLES)
+  const reduceMotion = useReducedMotion()
+  const role = useTypewriter(ROLES, { enabled: !reduceMotion })
   const canvasRef = useRef(null)
 
-  // Particle canvas
+  // Particle canvas. Skipped entirely under reduced motion — no rAF loop,
+  // no listener, nothing painted.
   useEffect(() => {
+    if (reduceMotion) return
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     let animId
     let particles = []
+    // CSS pixel dimensions; the backing store is scaled by DPR below.
+    let w = 0
+    let h = 0
 
     const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      w = window.innerWidth
+      h = window.innerHeight
+      canvas.width = Math.floor(w * dpr)
+      canvas.height = Math.floor(h * dpr)
+      canvas.style.width = `${w}px`
+      canvas.style.height = `${h}px`
+      // Reset before scaling so repeated resizes don't compound the transform.
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
+      ctx.scale(dpr, dpr)
     }
     resize()
     window.addEventListener('resize', resize)
 
     for (let i = 0; i < 60; i++) {
       particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
+        x: Math.random() * w,
+        y: Math.random() * h,
         r: Math.random() * 1.5 + 0.3,
         dx: (Math.random() - 0.5) * 0.3,
         dy: (Math.random() - 0.5) * 0.3,
@@ -70,7 +85,7 @@ export default function Hero() {
     }
 
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, w, h)
       particles.forEach((p) => {
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
@@ -79,8 +94,8 @@ export default function Hero() {
         ctx.fill()
         p.x += p.dx
         p.y += p.dy
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1
+        if (p.x < 0 || p.x > w) p.dx *= -1
+        if (p.y < 0 || p.y > h) p.dy *= -1
       })
       ctx.globalAlpha = 1
       animId = requestAnimationFrame(draw)
@@ -91,7 +106,16 @@ export default function Hero() {
       cancelAnimationFrame(animId)
       window.removeEventListener('resize', resize)
     }
-  }, [])
+  }, [reduceMotion])
+
+  // Blobs stay visible under reduced motion, they just stop drifting.
+  const drift = (x, y, duration, delay = 0) =>
+    reduceMotion
+      ? {}
+      : {
+          animate: { x, y },
+          transition: { duration, repeat: Infinity, ease: 'easeInOut', delay },
+        }
 
   return (
     <section id="home" style={{
@@ -101,16 +125,17 @@ export default function Hero() {
       position: 'relative',
       overflow: 'hidden',
     }}>
-      {/* Particle canvas */}
-      <canvas ref={canvasRef} style={{
-        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
-      }} />
+      {/* Particle canvas — decorative only */}
+      {!reduceMotion && (
+        <canvas ref={canvasRef} aria-hidden="true" style={{
+          position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
+        }} />
+      )}
 
       {/* Gradient blobs */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden', pointerEvents: 'none' }}>
         <motion.div
-          animate={{ x: [0, 60, -30, 0], y: [0, -40, 60, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+          {...drift([0, 60, -30, 0], [0, -40, 60, 0], 20)}
           style={{
             position: 'absolute', top: '-10%', left: '-5%',
             width: 600, height: 600,
@@ -120,8 +145,7 @@ export default function Hero() {
           }}
         />
         <motion.div
-          animate={{ x: [0, -50, 40, 0], y: [0, 60, -30, 0] }}
-          transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+          {...drift([0, -50, 40, 0], [0, 60, -30, 0], 25, 3)}
           style={{
             position: 'absolute', top: '20%', right: '-10%',
             width: 500, height: 500,
@@ -131,8 +155,7 @@ export default function Hero() {
           }}
         />
         <motion.div
-          animate={{ x: [0, 40, -60, 0], y: [0, -50, 30, 0] }}
-          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 6 }}
+          {...drift([0, 40, -60, 0], [0, -50, 30, 0], 22, 6)}
           style={{
             position: 'absolute', bottom: '5%', left: '30%',
             width: 450, height: 450,
@@ -143,7 +166,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="container" style={{ position: 'relative', zIndex: 1, paddingTop: 120 }}>
+      <div className="container" style={{ position: 'relative', zIndex: 1, paddingTop: 72 }}>
         <div style={{ maxWidth: 740 }}>
 
           {/* Badge */}
@@ -214,15 +237,20 @@ export default function Hero() {
               display: 'flex', alignItems: 'center', gap: 4,
             }}
           >
-            <span style={{ color: 'var(--grad-3)' }}>{'>'}</span>
-            <span style={{ fontFamily: 'var(--font-mono)' }}>{role}</span>
-            <span style={{
-              display: 'inline-block', width: 3, height: '1.2em',
-              background: 'var(--grad-2)',
-              borderRadius: 2,
-              animation: 'blink 1s step-end infinite',
-              marginLeft: 2,
-            }} />
+            {/* The visible text retypes constantly, which a screen reader would
+                announce on every keystroke. Hide it and expose a stable label. */}
+            <span className="sr-only">{ROLES.join(', ')}</span>
+            <span aria-hidden="true" style={{ color: 'var(--grad-3)' }}>{'>'}</span>
+            <span aria-hidden="true" style={{ fontFamily: 'var(--font-mono)' }}>{role}</span>
+            {!reduceMotion && (
+              <span aria-hidden="true" style={{
+                display: 'inline-block', width: 3, height: '1.2em',
+                background: 'var(--grad-2)',
+                borderRadius: 2,
+                animation: 'blink 1s step-end infinite',
+                marginLeft: 2,
+              }} />
+            )}
           </motion.div>
 
           {/* Bio */}
@@ -344,6 +372,7 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <motion.div
+        aria-hidden="true"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
@@ -357,8 +386,9 @@ export default function Hero() {
       >
         <span>SCROLL</span>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
+          {...(reduceMotion
+            ? {}
+            : { animate: { y: [0, 8, 0] }, transition: { duration: 1.5, repeat: Infinity } })}
           style={{
             width: 20, height: 32,
             border: '2px solid rgba(255,255,255,0.15)',

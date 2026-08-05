@@ -68,6 +68,45 @@ button {
   font-family: inherit;
 }
 
+/* Keyboard focus. Mouse users never see this; keyboard users need it,
+   since the reset above strips every default focus ring. */
+:focus-visible {
+  outline: 2px solid var(--grad-3);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Visually hidden, still announced by screen readers. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link — first tab stop, hidden until focused. */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 2000;
+  padding: 10px 18px;
+  background: var(--grad-1);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 0 0 8px 8px;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 0;
+}
+
 img {
   max-width: 100%;
   display: block;
@@ -115,6 +154,18 @@ img {
   padding: 0 24px;
 }
 
+@media (max-width: 768px) {
+  .section {
+    padding: 64px 0;
+  }
+  .container {
+    padding: 0 20px;
+  }
+  .section-subtitle {
+    margin-bottom: 40px;
+  }
+}
+
 .section-label {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -142,19 +193,9 @@ img {
 /* =====================
    ANIMATIONS
    ===================== */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
-
 @keyframes pulse-glow {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
-}
-
-@keyframes rotate-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 @keyframes gradient-shift {
@@ -166,4 +207,26 @@ img {
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+/* =====================
+   REDUCED MOTION
+   -----------------------
+   Respects the OS-level "reduce motion" setting. Framer Motion is handled
+   separately via useReducedMotion(); this covers CSS keyframes, smooth
+   scrolling, and any transition we don't drive through JS.
+   ===================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
