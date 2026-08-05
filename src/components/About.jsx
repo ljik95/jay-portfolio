@@ -6,13 +6,13 @@ const VALUE_PROPS = [
     icon: '⬡',
     color: '#7c3aed',
     title: 'Systems Thinker',
-    desc: 'I don\'t just write features — I look at the whole system. Whether migrating a platform to a monorepo or designing a serverless pipeline, I optimize for long-term scalability and team velocity.',
+    desc: 'I don\'t just write features — I look at the whole system. Whether restructuring a front-end platform or designing a serverless pipeline, I optimize for long-term scalability and team velocity.',
   },
   {
     icon: '◈',
     color: '#ec4899',
     title: 'Measurable Impact',
-    desc: 'I track outcomes, not output. My work has delivered 30% performance improvements and 50% reductions in manual processing time — engineering decisions backed by real data.',
+    desc: 'I track outcomes, not output. I instrument the work, watch what actually changes for users and for the team, and let that evidence drive the next engineering decision.',
   },
   {
     icon: '◎',
@@ -51,8 +51,8 @@ export default function About() {
             </h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: 1.8, marginBottom: 20 }}>
               I'm a full-stack software engineer with 7+ years turning complex problems into clean,
-              scalable solutions. My background spans frontend-heavy product work in React and TypeScript,
-              backend systems in Python and Node.js, and cloud infrastructure on AWS.
+              scalable solutions. My background spans frontend-heavy product work in React, Next.js,
+              and TypeScript, backend systems in Python and Node.js, and cloud infrastructure on AWS.
             </p>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: 1.8, marginBottom: 32 }}>
               At Corteva Agriscience I grew from shipping individual features to leading
