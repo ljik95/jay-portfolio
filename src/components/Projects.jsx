@@ -1,8 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
-// NOTE TO JAY: Replace or add personal/OSS projects. The first four are derived from your
-// professional work. Add a fifth card for any personal/OSS projects + swap in real GitHub links.
+// The first three cards are derived from professional work; the fourth is a personal project.
 const PROJECTS = [
   {
     title: 'Frontend Platform Monorepo Migration',
@@ -54,37 +53,21 @@ const PROJECTS = [
     link: null,
   },
   {
-    title: 'Core Web Vitals Performance Overhaul',
-    type: 'Performance Engineering',
-    company: 'Corteva Agriscience',
+    title: 'AI Portfolio Analyst',
+    type: 'Personal Project',
+    company: null,
     color: '#f59e0b',
     glow: 'rgba(245,158,11,0.25)',
     description:
-      'Led a focused performance sprint to address degraded Core Web Vitals across the main user-facing application. Audited render bottlenecks, lazy-loaded heavy routes, and optimized asset delivery and caching headers.',
+      'A conversational AI analyst for investment portfolios. Upload a brokerage CSV and ask natural-language questions about holdings — returns, risk exposure, sector concentration — answered by an LLM agent with tool access to live market and filing data.',
     impact: [
-      'LCP improved from 4.3s to 1.7s (60% faster)',
-      'CLS reduced from 0.31 to 0.04',
-      '22% increase in average user session duration post-launch',
+      'Claude agent with tool calling over live market, SEC EDGAR, and news data',
+      'RAG pipeline backed by PostgreSQL + pgvector for filing and news retrieval',
+      'Next.js 14 App Router front end with streaming responses and Recharts visualizations',
+      'Fully containerized via Docker Compose; CI through GitHub Actions, tracing via LangSmith',
     ],
-    tags: ['React', 'Web Vitals', 'Lighthouse', 'Lazy Loading', 'Performance'],
-    link: null,
-  },
-  {
-    title: 'Your Personal / OSS Project',
-    type: 'Personal / Open Source',
-    company: null,
-    color: '#a78bfa',
-    glow: 'rgba(167,139,250,0.25)',
-    description:
-      'Add a personal project, open source contribution, or side build here. Even a small project with a live demo or GitHub link is a major signal to hiring managers — it shows you code for the love of it.',
-    impact: [
-      'Shows initiative outside of work',
-      'Demonstrates code quality and personal taste',
-      'Link to live demo or GitHub repo',
-    ],
-    tags: ['Your Stack', 'Here'],
-    link: null,
-    placeholder: true,
+    tags: ['Next.js', 'TypeScript', 'FastAPI', 'LangChain', 'Claude API', 'pgvector', 'Docker'],
+    link: 'https://github.com/ljik95/stock-portfolio-analyst',
   },
 ]
 
@@ -104,16 +87,8 @@ function ProjectCard({ project, index }) {
         boxShadow: `0 24px 60px ${project.glow}`,
       }}
       style={{
-        background: project.placeholder
-          ? `repeating-linear-gradient(
-              -45deg,
-              rgba(245,158,11,0.03),
-              rgba(245,158,11,0.03) 10px,
-              transparent 10px,
-              transparent 20px
-            ), var(--bg-card)`
-          : 'var(--bg-card)',
-        border: `1px solid ${project.placeholder ? 'rgba(245,158,11,0.2)' : 'var(--border)'}`,
+        background: 'var(--bg-card)',
+        border: '1px solid var(--border)',
         borderRadius: 'var(--radius-lg)',
         padding: '32px',
         transition: 'all 0.35s',
@@ -176,8 +151,6 @@ function ProjectCard({ project, index }) {
       <p style={{
         color: 'var(--text-secondary)', fontSize: '0.88rem',
         lineHeight: 1.7, marginBottom: 20,
-        opacity: project.placeholder ? 0.6 : 1,
-        fontStyle: project.placeholder ? 'italic' : 'normal',
       }}>
         {project.description}
       </p>
