@@ -28,14 +28,6 @@ const LINKS = [
     glow: 'rgba(245,158,11,0.4)',
     isText: true,
   },
-  {
-    label: 'Phone',
-    value: '(253) 886-0919',
-    href: 'tel:+12538860919',
-    icon: '☎',
-    color: '#ec4899',
-    glow: 'rgba(236,72,153,0.4)',
-  },
 ]
 
 export default function Contact() {
