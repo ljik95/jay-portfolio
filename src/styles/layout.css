@@ -1,0 +1,186 @@
+/* ==========================================================================
+   LAYOUT + SHARED EDITORIAL PRIMITIVES
+   ========================================================================== */
+
+.shell {
+  width: 100%;
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: clamp(80px, 11vw, 160px);
+}
+
+.section--tight {
+  padding-block: clamp(64px, 8vw, 112px);
+}
+
+/* A hairline that spans the content frame. Structure, not decoration. */
+.rule {
+  height: 1px;
+  width: 100%;
+  background: var(--rule);
+  border: 0;
+}
+
+/* --- Section header ------------------------------------------------------
+   Numbered mono label + rule + serif title. The numbering is what makes the
+   page read as a document rather than a stack of cards.
+   ------------------------------------------------------------------------ */
+.sec-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  margin-bottom: clamp(40px, 6vw, 80px);
+}
+
+.sec-index {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--step-meta);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.sec-index__num {
+  color: var(--accent);
+}
+
+/* The rule is a real element so it can draw itself across on entry. */
+.sec-index__rule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+  transform-origin: left center;
+}
+
+.sec-title {
+  font-size: var(--step-display);
+  max-width: 18ch;
+}
+
+.sec-lead {
+  max-width: 46ch;
+  font-size: var(--step-lead);
+  line-height: 1.5;
+  color: var(--ink-muted);
+  text-wrap: pretty;
+}
+
+/* --- Small type ---------------------------------------------------------- */
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--step-meta);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.prose {
+  max-width: var(--measure-text);
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  line-height: 1.62;
+  color: var(--ink-body);
+  text-wrap: pretty;
+}
+
+.prose + .prose {
+  margin-top: var(--space-3);
+}
+
+/* --- Link with a rule that draws in from the left ------------------------ */
+.link-draw {
+  position: relative;
+  display: inline-block;
+  color: var(--ink);
+  padding-bottom: 2px;
+}
+.link-draw::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+.link-draw:hover::after,
+.link-draw:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* --- Buttons ------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-in-out),
+    color var(--dur-fast) var(--ease-in-out),
+    border-color var(--dur-fast) var(--ease-in-out);
+}
+
+.btn--solid {
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+}
+.btn--solid:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--rule-strong);
+}
+.btn--ghost:hover {
+  border-color: var(--ink);
+  background: rgba(22, 19, 15, 0.04);
+}
+
+.btn__arrow {
+  display: inline-block;
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+.btn:hover .btn__arrow {
+  transform: translate(3px, -3px);
+}
+.btn--down:hover .btn__arrow {
+  transform: translateY(3px);
+}
+
+/* --- Reveal primitive ----------------------------------------------------
+   Text slides up out of a mask. Applied per line or per word, never per
+   letter — letter animation on long headings looks like a tech demo.
+   ------------------------------------------------------------------------ */
+.mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em; /* room for descenders inside the mask */
+}
+
+.mask--inline {
+  display: inline-block;
+  vertical-align: bottom;
+  padding-bottom: 0.12em; /* the word also rotates, so it needs a little more */
+}

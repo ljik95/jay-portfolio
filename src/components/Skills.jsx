@@ -1,161 +1,115 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { Fragment } from 'react'
+import { Reveal, SectionHead } from '../lib/motion'
 
-const SKILL_CATEGORIES = [
+const GROUPS = [
   {
-    label: 'Frontend',
-    color: '#7c3aed',
-    glow: 'rgba(124,58,237,0.3)',
-    icon: '◈',
-    skills: ['TypeScript', 'React', 'NextJS', 'Vue', 'HTML', 'CSS'],
+    key: 'Languages',
+    items: ['TypeScript', 'JavaScript', 'Python', 'SQL'],
   },
   {
-    label: 'Backend',
-    color: '#ec4899',
-    glow: 'rgba(236,72,153,0.3)',
-    icon: '⬡',
-    skills: ['Python', 'NodeJS', 'PostgreSQL', 'REST API'],
+    key: 'Front end',
+    items: [
+      'React',
+      'Next.js',
+      'Vue',
+      'Redux',
+      'State management',
+      'Storybook',
+      'Vite',
+      'Accessibility',
+      'HTML',
+      'CSS',
+    ],
   },
   {
-    label: 'DevOps & Cloud',
-    color: '#06b6d4',
-    glow: 'rgba(6,182,212,0.3)',
-    icon: '◎',
-    skills: ['AWS Lambda', 'Terraform', 'CI/CD', 'Git'],
+    key: 'Back end',
+    items: ['Node.js', 'Python', 'FastAPI', 'PostgreSQL', 'REST APIs'],
   },
   {
-    label: 'Practices',
-    color: '#f59e0b',
-    glow: 'rgba(245,158,11,0.3)',
-    icon: '◆',
-    skills: ['Agile Methodologies', 'Test Driven Development', 'AI Integration & LLM APIs', 'Integration Testing'],
+    // TDD and integration testing moved here from Practices — they were the
+    // only two entries doing double duty, and they read as testing, not habits.
+    key: 'Testing',
+    items: [
+      'Jest',
+      'Vitest',
+      'React Testing Library',
+      'Playwright',
+      'Test-driven development',
+      'Integration testing',
+    ],
+  },
+  {
+    key: 'Cloud & DevOps',
+    items: ['AWS Lambda', 'Terraform', 'Docker', 'Datadog', 'CI/CD', 'Git'],
+  },
+  {
+    key: 'AI engineering',
+    items: [
+      'LLM agents',
+      'Tool calling',
+      'RAG',
+      'LangChain',
+      'pgvector',
+      'Claude',
+      'Cursor',
+    ],
+  },
+  {
+    key: 'Practices',
+    items: ['Code review', 'Technical writing', 'Agile', 'Mentoring'],
   },
 ]
 
-function SkillCategory({ cat, index }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-60px' })
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay: index * 0.1 }}
-      whileHover={{
-        borderColor: `${cat.color}40`,
-        background: 'rgba(255,255,255,0.05)',
-        boxShadow: `0 0 40px ${cat.glow}`,
-      }}
-      style={{
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border)',
-        borderRadius: 'var(--radius-lg)',
-        padding: '28px 28px',
-        transition: 'all 0.3s',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Corner glow */}
-      <div style={{
-        position: 'absolute', top: -40, right: -40,
-        width: 120, height: 120,
-        borderRadius: '50%',
-        background: `radial-gradient(circle, ${cat.color}20, transparent 70%)`,
-        pointerEvents: 'none',
-      }} />
-
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-        <div style={{
-          width: 40, height: 40, borderRadius: 12,
-          background: `${cat.color}18`,
-          border: `1px solid ${cat.color}30`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '1.1rem', color: cat.color,
-        }}>
-          {cat.icon}
-        </div>
-        <h3 style={{
-          fontSize: '0.95rem', fontWeight: 700,
-          color: cat.color,
-        }}>
-          {cat.label}
-        </h3>
-      </div>
-
-      {/* Skills */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-        {cat.skills.map((skill, si) => (
-          <motion.span
-            key={skill}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.3, delay: index * 0.1 + si * 0.05 + 0.2 }}
-            whileHover={{
-              scale: 1.08,
-              background: `${cat.color}25`,
-              boxShadow: `0 0 12px ${cat.color}40`,
-            }}
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.78rem',
-              fontWeight: 500,
-              color: 'var(--text-primary)',
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              padding: '6px 14px',
-              borderRadius: 50,
-              cursor: 'default',
-              transition: 'all 0.2s',
-              display: 'inline-block',
-            }}
-          >
-            {skill}
-          </motion.span>
-        ))}
-      </div>
-    </motion.div>
-  )
-}
+const EDUCATION = [
+  {
+    school: 'Fullstack Academy',
+    where: 'Chicago, IL · 2018–2019',
+    note: 'Full-time software engineering immersive. Built web and mobile apps with JavaScript, React, React Native, SQL, and HTML/CSS.',
+  },
+  {
+    school: 'University of Illinois at Urbana-Champaign',
+    where: 'Champaign, IL · 2013–2018',
+    note: 'B.S. in Chemistry. Moved into software after discovering programming mid-degree — the lab work is where the habit of measuring before and after came from.',
+  },
+]
 
 export default function Skills() {
-  const titleRef = useRef(null)
-  const titleInView = useInView(titleRef, { once: true, margin: '-60px' })
-
   return (
-    <section id="skills" className="section" style={{
-      background: 'linear-gradient(180deg, transparent 0%, rgba(124,58,237,0.04) 50%, transparent 100%)',
-    }}>
-      <div className="container">
-        <motion.div
-          ref={titleRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={titleInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          style={{ marginBottom: 64 }}
-        >
-          <span className="section-label">Capabilities</span>
-          <h2 className="section-title">
-            Technical{' '}
-            <span style={{ color: '#06b6d4' }}>Skills</span>
-          </h2>
-          <p className="section-subtitle">
-            A full-stack toolkit honed across 7+ years of production engineering.
-          </p>
-        </motion.div>
+    <section id="skills" className="section">
+      <div className="shell">
+        <SectionHead
+          index="04"
+          label="Capabilities"
+          title="What I reach for."
+        />
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: 20,
-        }}>
-          {SKILL_CATEGORIES.map((cat, i) => (
-            <SkillCategory key={cat.label} cat={cat} index={i} />
+        <div className="skills__list">
+          {GROUPS.map((group, gi) => (
+            <Reveal className="skill-row" key={group.key} delay={gi * 0.06}>
+              <span className="skill-row__key mono">{group.key}</span>
+              <span className="skill-row__items">
+                {group.items.map((item, i) => (
+                  <Fragment key={item}>
+                    <span className="skill">{item}</span>
+                    {i < group.items.length - 1 && (
+                      <span className="skill-sep" aria-hidden="true">·</span>
+                    )}
+                  </Fragment>
+                ))}
+              </span>
+            </Reveal>
           ))}
         </div>
 
+        <div className="edu">
+          {EDUCATION.map((e, i) => (
+            <Reveal className="edu__item" key={e.school} delay={i * 0.08}>
+              <h4>{e.school}</h4>
+              <span className="edu__where mono">{e.where}</span>
+              <p className="edu__note">{e.note}</p>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   )
