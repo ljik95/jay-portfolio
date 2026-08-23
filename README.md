@@ -62,26 +62,6 @@ drops transforms while keeping opacity fades, CSS keyframes are neutralized in
 `styles/base.css`, the curtain and custom cursor do not render at all, the typed line
 appears complete on the first frame, and the marquee falls back to a static row.
 
-## Performance
-
-Measured on the production build, unthrottled, cold cache:
-
-| | |
-| --- | --- |
-| FCP | ~120 ms |
-| LCP | ~1.15 s |
-| CLS | 0.001 |
-| Transfer | ~530 KB (291 KB JS, 209 KB fonts, 31 KB CSS) |
-
-Two things drive the LCP number, and both are choreography rather than payload:
-the curtain sits in front of the largest contentful paint, and the hero's entrance
-delays gate when its text first paints. An earlier cut held the curtain for 820 ms
-and staggered the hero out to 1.1 s, which put LCP at 2.2 s — worse than the page
-deserved. Both were pulled forward; the sequence still reads, and LCP roughly halved.
-
-The remaining cost is Framer Motion, which is most of the 291 KB. Swapping to
-`LazyMotion` with the `domMax` feature bundle is the obvious next win.
-
 ## Accessibility
 
 - Every text/background pair meets WCAG AA (4.5:1 body, 3:1 large).
